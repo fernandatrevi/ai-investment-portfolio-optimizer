@@ -1,5 +1,6 @@
 """Public interactive investment portfolio research dashboard."""
 from datetime import date
+import pandas as pd
 import numpy as np
 import plotly.express as px
 import streamlit as st
@@ -7,6 +8,7 @@ from src.data import DEFAULT_TICKERS, get_prices
 from src.metrics import daily_returns, asset_statistics, portfolio_statistics
 from src.optimization import minimum_variance_weights
 from src.clustering import cluster_assets
+from src.backtest import holdout_backtest
 
 st.set_page_config(page_title="AI Investment Portfolio Optimizer", page_icon="📈", layout="wide")
 st.title("📈 AI Investment Portfolio Optimizer")
@@ -39,7 +41,7 @@ c1.metric("Equal weight annualized return", f"{equal_stats['annual_return']:.1%}
 c2.metric("Minimum variance annualized return", f"{optimized_stats['annual_return']:.1%}")
 c3.metric("Minimum variance annualized volatility", f"{optimized_stats['volatility']:.1%}")
 st.caption("Weights are estimated from the selected historical period; these in-sample figures are not out-of-sample performance.")
-allocations = __import__('pandas').DataFrame({"Stock": prices.columns, "Equal weight": equal_weights, "Minimum variance": optimized_weights})
+allocations = pd.DataFrame({"Stock": prices.columns, "Equal weight": equal_weights, "Minimum variance": optimized_weights})
 left, right = st.columns(2)
 with left:
     st.plotly_chart(px.bar(allocations.melt(id_vars="Stock", var_name="Method", value_name="Weight"), x="Stock", y="Weight", color="Method", barmode="group", title="Portfolio weights"), use_container_width=True)
@@ -52,3 +54,28 @@ st.subheader("Hypothetical capital allocation")
 allocations["Optimized USD"] = allocations["Minimum variance"] * capital
 st.dataframe(allocations.style.format({"Equal weight": "{:.1%}", "Minimum variance": "{:.1%}", "Optimized USD": "${:,.2f}"}), use_container_width=True, hide_index=True)
 st.caption("Important: The clustering is descriptive, not a return prediction. No transaction costs, taxes or slippage are included.")
+
+
+st.subheader("Out-of-sample historical evaluation")
+st.caption("Weights are estimated using the earliest 70% of observations and evaluated on the later 30%. This avoids fitting weights on the test period.")
+try:
+    evaluation = holdout_backtest(prices)
+    st.write(f"Training ends: {evaluation['train_end']} · Test begins: {evaluation['test_start']} · Test ends: {evaluation['test_end']}")
+    test_table = pd.DataFrame({
+        "Strategy": ["Equal weight", "Minimum variance"],
+        "Annualized test return": [evaluation["equal"]["annual_return"], evaluation["optimized"]["annual_return"]],
+        "Annualized test volatility": [evaluation["equal"]["volatility"], evaluation["optimized"]["volatility"]],
+        "Maximum test drawdown": [evaluation["equal"]["max_drawdown"], evaluation["optimized"]["max_drawdown"]],
+    })
+    st.dataframe(test_table.style.format({
+        "Annualized test return": "{:.2%}",
+        "Annualized test volatility": "{:.2%}",
+        "Maximum test drawdown": "{:.2%}",
+    }), hide_index=True, use_container_width=True)
+    test = evaluation["test_returns"]
+    eq_growth = (1 + test @ np.repeat(1 / len(test.columns), len(test.columns))).cumprod()
+    opt_growth = (1 + test @ evaluation["weights"]).cumprod()
+    curves = pd.DataFrame({"Equal weight": eq_growth, "Minimum variance": opt_growth})
+    st.plotly_chart(px.line(curves, title="Growth of $1 during the unseen test period", labels={"value": "Portfolio value (USD)", "index": "Date", "variable": "Strategy"}), use_container_width=True)
+except ValueError as exc:
+    st.warning(f"Not enough data for holdout evaluation: {exc}")
