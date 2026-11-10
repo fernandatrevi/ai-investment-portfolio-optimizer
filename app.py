@@ -154,6 +154,7 @@ with tab1:
                 labels={"value": "Indexed adjusted price (100 = start)",
                         "index": "Date", "variable": "Asset"},
                 title="Historical adjusted-price comparison",
+                render_mode="svg",
             ),
             use_container_width=True,
         )
@@ -171,6 +172,7 @@ with tab1:
             labels={"value": "Hypothetical portfolio value (USD)",
                     "index": "Date", "variable": "Strategy"},
             title="Historical in-sample portfolio paths",
+            render_mode="svg",
         ),
         use_container_width=True,
     )
@@ -258,6 +260,7 @@ with tab3:
                         grouped, x="Annualized volatility", y="Annualized return",
                         color="Cluster", hover_name="Asset",
                         title="KMeans: descriptive asset groups",
+                        render_mode="svg",
                     ),
                     use_container_width=True,
                 )
@@ -321,6 +324,7 @@ with tab4:
             px.line(
                 test_curves,
                 title="Test-period hypothetical portfolio paths",
+                render_mode="svg",
                 labels={"value": "Hypothetical portfolio value (USD)",
                         "index": "Date", "variable": "Strategy"},
             ),
