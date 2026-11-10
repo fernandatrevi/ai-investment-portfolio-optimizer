@@ -1,23 +1,38 @@
 # AI Investment Portfolio Optimizer
 
-**Portfolio analytics · Python · Streamlit · Machine learning**
+**Portfolio Research · Python · Streamlit · Plotly · Quantitative Analytics**
 
-**[Explore the GitHub repository](https://github.com/fernandatrevi/ai-investment-portfolio-optimizer)**
+[**Source code and dashboard application**](https://github.com/fernandatrevi/ai-investment-portfolio-optimizer) · [Run with Streamlit Community Cloud](https://share.streamlit.io/)
 
-An educational web dashboard for studying portfolio allocation and historical risk/return characteristics. The project uses Python, Streamlit, historical financial data and machine-learning techniques.
+An interactive **educational** dashboard for exploring historical asset allocation, risk and return. It retrieves adjusted market prices through `yfinance` and compares equal-weight and long-only minimum-variance portfolios.
 
-> **Deployment status:** No verified public demo URL is documented for this project. To use the dashboard, run it locally using the instructions below. A live application link can be added after successful deployment.
+> **Deployment:** A public working deployment URL has not been verified. The application code is available in this repository but is not automatically hosted by GitHub.
 
-## Features
+## Interactive features
 
-- Retrieves historical adjusted closing prices from Yahoo Finance with `yfinance`.
-- Compares equal-weight allocations with a long-only minimum-variance allocation.
-- Reports annualized historical returns and volatility.
-- Visualizes correlations between assets.
-- Uses KMeans to group assets by historical return and volatility.
-- Calculates hypothetical allocations in USD.
+| Section | What users can explore |
+|---|---|
+| Portfolio builder | Choose from preset stock symbols, historical dates and hypothetical USD capital |
+| Performance | Interactive adjusted-price and portfolio growth charts |
+| Allocation | Equal-weight vs minimum-variance portfolios, USD amounts, weight chart and donut chart |
+| Risk | Historical annualized volatility, maximum drawdown, downside deviation, daily VaR and CVaR |
+| Asset relationships | Return correlations and descriptive KMeans clustering |
+| Holdout evaluation | Change the chronological training fraction (50–90%) and compare subsequent test-period outcomes |
+| Exports | Download allocation, risk indicators and holdout comparison as CSV |
 
-## Run locally
+All dashboard labels are in English.
+
+## Important methodology
+
+- Market data are historical adjusted prices retrieved by `yfinance`.
+- Minimum-variance weights minimize the **estimated in-sample variance**, subject to nonnegative weights that sum to one.
+- The equal-weight portfolio is a reference strategy, not an assertion of optimality.
+- The plotted strategy paths use **daily constant-weight rebalancing as a simplified illustration**. Real trading costs, taxes and constraints are excluded.
+- Daily empirical VaR and CVaR are historical estimates, not guaranteed future losses or upper bounds.
+- The holdout evaluation fits on earlier observations and assesses performance on later observations. It is a single chronological split, **not a validated live trading strategy or full walk-forward backtest**.
+- KMeans detects descriptive groups in historical return and volatility, not predictions or AI-generated investment advice.
+
+## Launch the app locally
 
 ```bash
 python -m venv .venv
@@ -26,16 +41,16 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-On Windows activate the virtual environment with `.venv\Scripts\activate`.
+On Windows, activate the environment with `.venv\Scripts\activate`.
 
-## Deploy a public demo
+## Publish the dashboard
 
-Use [Streamlit Community Cloud](https://share.streamlit.io/) to deploy this GitHub repository. Select the `main` branch and `app.py` as the entry point. Add a public demo URL to this README and to the repository's **About → Website** field *only after* a successful deployment has been tested.
+The repository already contains `app.py` and `requirements.txt`. Deploy through [Streamlit Community Cloud](https://share.streamlit.io/), selecting the `main` branch and `app.py` as the entry point. Confirm that the initial data retrieval, charts, exports and holdout tab work in the deployment before adding a live website link here or in GitHub's **About** field.
 
-## Model limitations
+## Limitations
 
-**Educational analysis only — not investment advice.** Optimized portfolio weights and historical performance are evaluated in-sample, so the analysis does not validate future returns. Market data can be delayed, unavailable or incomplete. KMeans clustering is descriptive, not predictive. The analysis excludes transaction costs, taxes and slippage. Walk-forward backtesting remains a proposed improvement.
+**Educational research, not financial advice.** Portfolio optimization and overall historical statistics are in-sample. A single historical holdout can still be sensitive to market period, symbol selection and model assumptions. Historical prices may be incomplete or delayed. This dashboard does not account for transaction costs, slippage, tax impact, short sales, investment restrictions or portfolio execution. KMeans clustering is descriptive.
 
-## Key competencies
+## Skills demonstrated
 
-Portfolio modeling, data preparation, historical risk metrics, constrained optimization, exploratory clustering and interactive dashboard development.
+Python data handling, structured financial analytics, portfolio optimization, scenario interfaces, interactive Plotly visualization, risk reporting, historical holdout evaluation, reproducibility and Git version control.
