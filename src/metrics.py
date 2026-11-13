@@ -20,5 +20,7 @@ def portfolio_statistics(returns: pd.DataFrame, weights: np.ndarray) -> dict:
     growth = (1 + weighted).cumprod()
     annual_return = float(growth.iloc[-1] ** (TRADING_DAYS / len(weighted)) - 1)
     volatility = float(weighted.std() * np.sqrt(TRADING_DAYS))
-    drawdown = float((growth / growth.cummax() - 1).min())
+    # Include initial capital (1.0): a loss on the first day is a drawdown too.
+    running_peak = growth.cummax().clip(lower=1.0)
+    drawdown = float((growth / running_peak - 1).min())
     return {"annual_return": annual_return, "volatility": volatility, "max_drawdown": drawdown}
