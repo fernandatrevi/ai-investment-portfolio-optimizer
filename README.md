@@ -2,11 +2,11 @@
 
 **Portfolio Research · Python · Streamlit · Plotly · Quantitative Analytics**
 
-[**Source code and dashboard application**](https://github.com/fernandatrevi/ai-investment-portfolio-optimizer) · [Run with Streamlit Community Cloud](https://share.streamlit.io/)
+[**Source code and dashboard application**](https://github.com/fernandatrevi/ai-investment-portfolio-optimizer) · [**Live dashboard**](https://ai-investment-portfolio-optimizer-tsjajqgwafh9vj3tavxaoj.streamlit.app/)
 
 An interactive **educational** dashboard for exploring historical asset allocation, risk and return. It retrieves adjusted market prices through `yfinance` and compares equal-weight and long-only minimum-variance portfolios.
 
-> **Deployment status:** The application is ready to submit to Streamlit Community Cloud; a public URL has not yet been created or verified. Deployment requires signing into the hosting service and selecting this repository.
+> **Deployment:** [Open the public Streamlit app](https://ai-investment-portfolio-optimizer-tsjajqgwafh9vj3tavxaoj.streamlit.app/). The URL was provided by the project owner; successful loading and functionality have not been independently verified.
 
 ## Interactive features
 
@@ -54,7 +54,7 @@ The repository already contains the application entry point (`app.py`), Python d
 5. Where available, choose **Python 3.12** and optionally set a memorable subdomain.
 6. Click **Deploy**, then open the resulting `https://…streamlit.app/` link.
 7. Check that market prices load, the Performance/Allocation/Risk/Holdout tabs render, and CSV exports work. If Yahoo Finance rate limits requests, retry later and check Cloud logs.
-8. Only **after the public link works**, replace this deployment status note and add the verified URL to the GitHub profile README.
+8. The public URL has been provided and linked in the GitHub profile. Verify live data retrieval, charts, exports, and evaluation tabs after each deployment.
 
 **Do not put passwords, API tokens or credentials in GitHub.** This app uses public Yahoo Finance data, so no secrets are required for this initial deployment. Hosting availability and external market-data access are not guaranteed.
 
