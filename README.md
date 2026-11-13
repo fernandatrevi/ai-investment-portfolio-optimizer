@@ -6,7 +6,7 @@
 
 An interactive **educational** dashboard for exploring historical asset allocation, risk and return. It retrieves adjusted market prices through `yfinance` and compares equal-weight and long-only minimum-variance portfolios.
 
-> **Deployment:** A public working deployment URL has not been verified. The application code is available in this repository but is not automatically hosted by GitHub.
+> **Deployment status:** The application is ready to submit to Streamlit Community Cloud; a public URL has not yet been created or verified. Deployment requires signing into the hosting service and selecting this repository.
 
 ## Interactive features
 
@@ -43,9 +43,21 @@ streamlit run app.py
 
 On Windows, activate the environment with `.venv\Scripts\activate`.
 
-## Publish the dashboard
+## Publish the dashboard (Streamlit Community Cloud)
 
-The repository already contains `app.py` and `requirements.txt`. Deploy through [Streamlit Community Cloud](https://share.streamlit.io/), selecting the `main` branch and `app.py` as the entry point. Confirm that the initial data retrieval, charts, exports and holdout tab work in the deployment before adding a live website link here or in GitHub's **About** field.
+The repository already contains the application entry point (`app.py`), Python dependencies (`requirements.txt`), and the `.streamlit/config.toml` appearance configuration.
+
+1. Open **[Streamlit Community Cloud](https://share.streamlit.io/)** and sign in with the GitHub account `fernandatrevi`.
+2. Choose **Create app → Yup, I have an app**.
+3. Select **Repository:** `fernandatrevi/ai-investment-portfolio-optimizer`.
+4. Select **Branch:** `main` and **Main file path:** `app.py`.
+5. Where available, choose **Python 3.12** and optionally set a memorable subdomain.
+6. Click **Deploy**, then open the resulting `https://…streamlit.app/` link.
+7. Check that market prices load, the Performance/Allocation/Risk/Holdout tabs render, and CSV exports work. If Yahoo Finance rate limits requests, retry later and check Cloud logs.
+8. Only **after the public link works**, replace this deployment status note and add the verified URL to the GitHub profile README.
+
+**Do not put passwords, API tokens or credentials in GitHub.** This app uses public Yahoo Finance data, so no secrets are required for this initial deployment. Hosting availability and external market-data access are not guaranteed.
+
 
 ## Limitations
 
